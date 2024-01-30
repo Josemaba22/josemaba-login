@@ -1,9 +1,13 @@
 package com.josemaba.security.persistence.entity;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.josemaba.security.persistence.util.Role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,7 +40,14 @@ public class User implements UserDetails {
 
        if (role.getPermissions() == null) return null;
 
-       role.getPer
+       return role.getPermissions().stream()
+            // .map(each -> {
+            //     String permission = each.name();
+            //     return new SimpleGrantedAuthority(permission);
+            // })
+            .map(each -> each.name())
+            .map(each -> new SimpleGrantedAuthority(each))
+            .collect(Collectors.toList());
     }
 
     @Override
