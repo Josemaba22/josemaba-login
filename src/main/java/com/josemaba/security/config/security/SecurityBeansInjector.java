@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.josemaba.security.exception.ObjectNotFoundException;
 import com.josemaba.security.persistence.repository.UserRepository;
 
 @Configuration
@@ -43,7 +44,7 @@ public class SecurityBeansInjector {
         return (username) -> {
             return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ObjectNotFoundException("User not found with username " + username));
-        }
+        };
     }
 
 }
