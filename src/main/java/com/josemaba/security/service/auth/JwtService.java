@@ -18,7 +18,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 
     @Value("${security.jwt.secret-key}")
-    private String SECRET_KEY = null;
+    private String SECRET_KEY;
 
     @Value("${security.jwt.expiration-in-minutes}")
     private Long EXPIRATION_IN_MINUTES;
@@ -47,6 +47,10 @@ public class JwtService {
         byte[] passwordDecoded = Decoders.BASE64.decode(SECRET_KEY);
         System.out.println( new String(passwordDecoded));
         return Keys.hmacShaKeyFor(passwordDecoded);
+
+        //     System.out.println(SECRET_KEY);
+        //    byte[] key = SECRET_KEY.getBytes();
+        //    return Keys.hmacShaKeyFor(key);
     }
     
     public String extractUsername(String jwt) {

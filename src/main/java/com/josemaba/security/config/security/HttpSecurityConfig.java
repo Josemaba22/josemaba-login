@@ -1,7 +1,6 @@
 package com.josemaba.security.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,7 +18,7 @@ public class HttpSecurityConfig {
     private AuthenticationProvider daoAuthProvider;
 
     @Bean
-    public SecurityFilterChain securituFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securituFilterChain(HttpSecurity http) throws Exception {
         SecurityFilterChain filterChain =  http
             .csrf( csrfConfig -> csrfConfig.disable())
             .sessionManagement(sessMagConfig -> sessMagConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
@@ -27,6 +26,8 @@ public class HttpSecurityConfig {
             .authorizeHttpRequests(authReqConfig -> {
                 authReqConfig.requestMatchers(HttpMethod.POST,"/customers").permitAll();
                 authReqConfig.requestMatchers(HttpMethod.POST,"/auth/**").permitAll();
+
+                authReqConfig.anyRequest().permitAll();//authenticated();
             })
             .build();
         return filterChain;

@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         apiError.setMethod(request.getMethod());
         apiError.setTimestamp(LocalDateTime.now());
         apiError.setMessage("Error interno en el servidor, vuelve a intentarlo.");
-
+        System.out.println(exception);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
     }
 

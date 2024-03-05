@@ -2,6 +2,7 @@ package com.josemaba.security.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.josemaba.security.dto.SaveUser;
@@ -11,6 +12,7 @@ import com.josemaba.security.persistence.repository.UserRepository;
 import com.josemaba.security.persistence.util.Role;
 import com.josemaba.security.service.UserService;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired

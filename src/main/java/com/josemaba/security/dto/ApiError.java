@@ -51,6 +51,5 @@ public class ApiError implements Serializable {
         this.method = method;
     } 
 
-
    
 }
