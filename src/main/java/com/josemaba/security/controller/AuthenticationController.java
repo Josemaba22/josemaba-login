@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.josemaba.security.dto.AuthenticationRequest;
 import com.josemaba.security.dto.AuthenticationResponse;
+import com.josemaba.security.persistence.entity.User;
 import com.josemaba.security.service.auth.AuthenticationService;
 
 import jakarta.validation.Valid;
@@ -36,5 +37,12 @@ public class AuthenticationController {
         AuthenticationResponse response = authenticationService.login(authenticationRequest);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<User> findMyProfile() {
+        User user = authenticationService.findLoggerInUser();
+        return ResponseEntity.ok(user);
+    }
+    
     
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import com.josemaba.security.exception.ObjectNotFoundException;
 import com.josemaba.security.persistence.entity.User;
@@ -33,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             throws ServletException, IOException {
 
                 System.out.println("ETRO EN EL FILTRO JWT AUTHENTICATION FILTER");
-                //1. Obtener encavezado http llamado Authorization
+                //1. Obtener encabezado http llamado Authorization
                 String authorizationHeader = request.getHeader("Authorization"); //Bearer jwt
                 if (!StringUtils.hasText(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")){
                     filterChain.doFilter(request, response);
@@ -51,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 User user = userService.findOneByUsername(username)
                     .orElseThrow(() -> new ObjectNotFoundException("User not found. Username: " + username));
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
+                authToken.setDetails(new WebAuthenticationDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
                 //5. Ejecutar el registro de filtros
