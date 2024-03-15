@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 import com.josemaba.security.config.security.filter.JwtAuthenticationFilter;
 import com.josemaba.security.persistence.util.Role;
@@ -43,7 +44,8 @@ public class HttpSecurityConfig {
         authReqConfig.requestMatchers(HttpMethod.GET,"/products")
             .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
 
-        authReqConfig.requestMatchers(HttpMethod.GET,"/products/{productId}")
+        //authReqConfig.requestMatchers(HttpMethod.GET,"/products/{productId}")
+        authReqConfig.requestMatchers(RegexRequestMatcher.regexMatcher(HttpMethod.GET,"/products/[0-9]*"))
             .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
 
         authReqConfig.requestMatchers(HttpMethod.POST,"/products")
