@@ -8,9 +8,9 @@ CREATE TABLE users (
     name VARCHAR(255),
     password VARCHAR(255),
     role ENUM(
-		'ROLE_ADMISNISTRATOR', 
-		'ROLE_ASSISTANT_ADMINISTRATOR', 
-		'ROLE_CUSTOMER'
+		'ADMINISTRATOR', 
+		'ASSISTANT_ADMINISTRATOR', 
+		'CUSTOMER'
 	) -- replace with your actual roles
 );
 
@@ -53,9 +53,10 @@ INSERT INTO products (name, price, status, category_id) VALUES ('Raqueta de Teni
 INSERT INTO products (name, price, status, category_id) VALUES ('Aspiradora', 120.00, 'ENABLED', 4);
 INSERT INTO products (name, price, status, category_id) VALUES ('Licuadora', 50.00, 'ENABLED', 4);
 
-INSERT INTO users (username,name, password, role) VALUES ('jose', 'Jose Manuel', '$2a$10$BM1xGYNrqYNNzBd9LA7dB.qTh0we/UjYxFnKexfgO/yLZ67BPk3Qm', 'ROLE_ADMISNISTRATOR');
-INSERT INTO users (username,name, password, role) VALUES ('rubi', 'Rubi Guadalupe', '$2a$10$K7C3gVm3s11G388M6HIAceIeutPuWhi20kebm.oTzWRsNNcrA1dVu', 'ROLE_ASSISTANT_ADMINISTRATOR');
-INSERT INTO users (username,name, password, role) VALUES ('margarita', 'Margarita', '$2a$10$wfu/o5skr/Jf93cO/4iGQ.BrxktP2.NUrYQOiwnDTEA9JDAqvkXS6', 'ROLE_CUSTOMER');
+INSERT INTO users (username,name, password, role) VALUES ('jose', 'Jose Manuel', '$2a$10$BM1xGYNrqYNNzBd9LA7dB.qTh0we/UjYxFnKexfgO/yLZ67BPk3Qm', 'ADMINISTRATOR');
+INSERT INTO users (username,name, password, role) VALUES ('rubi', 'Rubi Guadalupe', '$2a$10$K7C3gVm3s11G388M6HIAceIeutPuWhi20kebm.oTzWRsNNcrA1dVu', 'ASSISTANT_ADMINISTRATOR');
+INSERT INTO users (username,name, password, role) VALUES ('margarita', 'Margarita', '$2a$10$wfu/o5skr/Jf93cO/4iGQ.BrxktP2.NUrYQOiwnDTEA9JDAqvkXS6', 'CUSTOMER');
 
-
+TRUNCATE TABLE users;
+DROP TABLE users;
 SELECT *  FROM users;
