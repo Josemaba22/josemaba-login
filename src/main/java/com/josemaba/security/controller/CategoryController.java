@@ -22,7 +22,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'ASSISTANT_ADMINISTRATOR')")
+    @PreAuthorize("hasAuthority('READ_ALL_CATEGORIES')")
     @GetMapping
     public ResponseEntity<Page<Category>> findAll(Pageable pageable){
         Page<Category> categoryPage = categoryService.findAll(pageable);
@@ -32,7 +32,7 @@ public class CategoryController {
         return ResponseEntity.notFound().build();
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'ASSISTANT_ADMINISTRATOR')")
+    @PreAuthorize("hasAuthority('READ_ONE_CATEGORY')")
     @GetMapping("/{categoryId}")
     public ResponseEntity<Category> findOneById(@PathVariable Long categoryId){
         Optional<Category> category = categoryService.findOneById(categoryId);
@@ -43,14 +43,14 @@ public class CategoryController {
         return ResponseEntity.notFound().build();
     }
 
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    @PreAuthorize("hasAuthority('CREATE_ONE_CATEGORY')")
     @PostMapping
     public ResponseEntity<Category> createOne(@RequestBody @Valid SaveCategory saveCategory){
         Category category = categoryService.createOne(saveCategory);
         return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }
 
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    @PreAuthorize("hasAuthority('UPDATE_ONE_CATEGORY')")
     @PutMapping("/{categoryId}")
     public ResponseEntity<Category> updateOneById(@PathVariable Long categoryId,
             @RequestBody @Valid SaveCategory saveCategory){
@@ -58,7 +58,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'ASSISTANT_ADMINISTRATOR')")
+    @PreAuthorize("hasAuthority('DISABLE_ONE_CATEGORY')")
     @PutMapping("/{categoryId}/disabled")
     public ResponseEntity<Category> diableOneById(@PathVariable Long categoryId){
         Category category = categoryService.disableOneById(categoryId);

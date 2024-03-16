@@ -39,7 +39,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'ASSISTANT_ADMINISTRATOR', 'CUSTOMER')")
+    @PreAuthorize("hasAuthority('READ_MY_PROFILE')")
     @GetMapping("/profile")
     public ResponseEntity<User> findMyProfile() {
         User user = authenticationService.findLoggerInUser();
