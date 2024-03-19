@@ -35,7 +35,7 @@ public class HttpSecurityConfig {
             .sessionManagement(sessMagConfig -> sessMagConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
             .authenticationProvider(daoAuthProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .authorizeHttpRequests(authReqConfig -> buildRequestMatchersV2(authReqConfig))
+            //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersV2(authReqConfig))
             .build();
         return filterChain;
     }

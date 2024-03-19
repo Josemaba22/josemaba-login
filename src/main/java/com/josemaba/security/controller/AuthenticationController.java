@@ -33,6 +33,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(isTokenValid);
     }
 
+    @PreAuthorize("permitAll")
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody @Valid AuthenticationRequest authenticationRequest) {
         AuthenticationResponse response = authenticationService.login(authenticationRequest);
