@@ -33,14 +33,14 @@ public class AuthenticationController {
         return ResponseEntity.ok(isTokenValid);
     }
 
-    @PreAuthorize("permitAll")
+    //@PreAuthorize("permitAll")
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody @Valid AuthenticationRequest authenticationRequest) {
         AuthenticationResponse response = authenticationService.login(authenticationRequest);
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAuthority('READ_MY_PROFILE')")
+    //@PreAuthorize("hasAuthority('READ_MY_PROFILE')")
     @GetMapping("/profile")
     public ResponseEntity<User> findMyProfile() {
         User user = authenticationService.findLoggerInUser();

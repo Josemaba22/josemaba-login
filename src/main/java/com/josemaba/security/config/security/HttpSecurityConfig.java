@@ -6,20 +6,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.rsocket.RSocketSecurity.AuthorizePayloadsSpec.Access;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 import com.josemaba.security.config.security.filter.JwtAuthenticationFilter;
+import com.josemaba.security.config.security.handler.CustomAccessDeniedHandler;
+import com.josemaba.security.config.security.handler.CustomAuthenticationEntryPoints;
 import com.josemaba.security.persistence.util.Role;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+//@EnableMethodSecurity(prePostEnabled = true)
 public class HttpSecurityConfig {
 
     @Autowired
@@ -28,6 +33,12 @@ public class HttpSecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+
     @Bean
     SecurityFilterChain securituFilterChain(HttpSecurity http) throws Exception {
         SecurityFilterChain filterChain =  http
@@ -35,12 +46,16 @@ public class HttpSecurityConfig {
             .sessionManagement(sessMagConfig -> sessMagConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
             .authenticationProvider(daoAuthProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            //.authorizeHttpRequests(authReqConfig -> buildRequestMatchersV2(authReqConfig))
+            .authorizeHttpRequests(authReqConfig -> buildRequestMatchers(authReqConfig))
+            .exceptionHandling(exceptionHandlingConfig -> {
+                exceptionHandlingConfig.authenticationEntryPoint(authenticationEntryPoint);
+                exceptionHandlingConfig.accessDeniedHandler(accessDeniedHandler);
+            })
             .build();
         return filterChain;
     }
 
-    @SuppressWarnings("unused")
+    //@SuppressWarnings("unused")
     private static void buildRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
 
         // Autorizacion de endpoints de productos
@@ -88,6 +103,7 @@ public class HttpSecurityConfig {
 
     }
     
+    @SuppressWarnings("unused")
     private static void buildRequestMatchersV2(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
             
         // Autorizacion de endpoints publicos

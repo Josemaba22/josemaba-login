@@ -30,7 +30,7 @@ public class CustomerController {
     @Autowired
     private AuthenticationService authenticationService;
     
-    @PreAuthorize("permitAll")
+    //@PreAuthorize("permitAll")
     @PostMapping("/register")
     public ResponseEntity<RegisteredUser> registerOne(@RequestBody @Valid SaveUser newUser){
         RegisteredUser registeredUser = authenticationService.registerOneCustomer(newUser);
@@ -42,7 +42,7 @@ public class CustomerController {
         return ResponseEntity.ok("Hello " + name);
     }
 
-    @PreAuthorize("denyAll")
+    //@PreAuthorize("denyAll")
     @GetMapping
     public ResponseEntity<List<User>> findAll(){
         return ResponseEntity.ok(Arrays.asList());
