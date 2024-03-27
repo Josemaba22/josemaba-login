@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import com.josemaba.security.exception.ObjectNotFoundException;
-import com.josemaba.security.persistence.entity.User;
+import com.josemaba.security.persistence.entity.security.User;
 import com.josemaba.security.service.UserService;
 import com.josemaba.security.service.auth.JwtService;
 

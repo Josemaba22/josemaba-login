@@ -1,4 +1,4 @@
-package com.josemaba.security.persistence.entity;
+package com.josemaba.security.persistence.entity.security;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.josemaba.security.persistence.util.Role;
+import com.josemaba.security.persistence.util.RoleEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +17,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,7 +36,10 @@ public class User implements UserDetails {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
+    // @Enumerated(EnumType.STRING)
+    // private RoleEnum role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
     private Role role;
 
     @Override
@@ -49,11 +54,11 @@ public class User implements UserDetails {
             //     String permission = each.name();
             //     return new SimpleGrantedAuthority(permission);
             // })
-            .map(each -> each.name())
+            .map(each -> each.getOperation().getName())
             .map(each -> new SimpleGrantedAuthority(each))
             .collect(Collectors.toList());
 
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.getName()));
         return authorities;
 
     }

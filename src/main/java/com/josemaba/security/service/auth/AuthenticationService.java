@@ -16,7 +16,7 @@ import com.josemaba.security.dto.AuthenticationResponse;
 import com.josemaba.security.dto.RegisteredUser;
 import com.josemaba.security.dto.SaveUser;
 import com.josemaba.security.exception.ObjectNotFoundException;
-import com.josemaba.security.persistence.entity.User;
+import com.josemaba.security.persistence.entity.security.User;
 import com.josemaba.security.service.UserService;
 
 import jakarta.validation.Valid;
@@ -42,7 +42,7 @@ public class AuthenticationService {
         userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setUsername(user.getUsername());
-        userDto.setRole(user.getRole().name());
+        userDto.setRole(user.getRole().getName());
 
         String jwt = jwtService.generateToken(user, generateExtraClaims(user));
         userDto.setJwt(jwt);
@@ -55,7 +55,7 @@ public class AuthenticationService {
 
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("name", user.getName());
-        extraClaims.put("role", user.getRole().name());
+        extraClaims.put("role", user.getRole().getName());
         extraClaims.put("authorities",  user.getAuthorities());
 
         return extraClaims;

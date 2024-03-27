@@ -3,7 +3,7 @@ package com.josemaba.security.service;
 import java.util.Optional;
 
 import com.josemaba.security.dto.SaveUser;
-import com.josemaba.security.persistence.entity.User;
+import com.josemaba.security.persistence.entity.security.User;
 
 public interface UserService {
 

@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.josemaba.security.exception.ObjectNotFoundException;
-import com.josemaba.security.persistence.repository.UserRepository;
+import com.josemaba.security.persistence.repository.security.UserRepository;
 
 @Configuration
 public class SecurityBeansInjector {
@@ -26,7 +26,7 @@ public class SecurityBeansInjector {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationStrategy = new DaoAuthenticationProvider();
         authenticationStrategy.setPasswordEncoder(passwordEncoder());
         authenticationStrategy.setUserDetailsService(userDetailsService());
@@ -35,12 +35,12 @@ public class SecurityBeansInjector {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    UserDetailsService userDetailsService(){
         return (username) -> {
             return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ObjectNotFoundException("User not found with username " + username));

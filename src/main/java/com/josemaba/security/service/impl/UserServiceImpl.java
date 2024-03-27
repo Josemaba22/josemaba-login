@@ -9,9 +9,12 @@ import org.springframework.util.StringUtils;
 
 import com.josemaba.security.dto.SaveUser;
 import com.josemaba.security.exception.InvalidPasswordException;
-import com.josemaba.security.persistence.entity.User;
-import com.josemaba.security.persistence.repository.UserRepository;
-import com.josemaba.security.persistence.util.Role;
+import com.josemaba.security.exception.ObjectNotFoundException;
+import com.josemaba.security.persistence.entity.security.Role;
+import com.josemaba.security.persistence.entity.security.User;
+import com.josemaba.security.persistence.repository.security.UserRepository;
+import com.josemaba.security.persistence.util.RoleEnum;
+import com.josemaba.security.service.RoleService;
 import com.josemaba.security.service.UserService;
 
 @Service
@@ -23,6 +26,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleService roleService;
+
     @Override
     public User registerOneCustomer(SaveUser newUser) {
         
@@ -32,7 +38,10 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         user.setUsername(newUser.getUsername());
         user.setName(newUser.getName());
-        user.setRole(Role.CUSTOMER);
+
+        Role defaultRole = roleService.findDefaultRole()
+                    .orElseThrow(() -> new ObjectNotFoundException("Role not found. Default role."));
+        user.setRole(defaultRole);
         
         return userRepository.save(user); 
     }

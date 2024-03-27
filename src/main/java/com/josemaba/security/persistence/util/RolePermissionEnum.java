@@ -1,6 +1,6 @@
 package com.josemaba.security.persistence.util;
 
-public enum RolePermission {
+public enum RolePermissionEnum {
     
     READ_ALL_PRODUCTS,
     READ_ONE_PRODUCT,
